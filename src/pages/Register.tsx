@@ -3,6 +3,7 @@ import {
   Button,
   Container,
   Group,
+  LoadingOverlay,
   Paper,
   PasswordInput,
   Text,
@@ -10,10 +11,13 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { v4 as uuid4 } from "uuid";
 
 import classes from "./Auth.module.css";
 import { checkPassword } from "../utils/helpers";
+import { useDisclosure } from "@mantine/hooks";
+import { useRegister } from "../hooks/useAuth";
 
 type RegisterForm = {
   fullName: string;
@@ -45,11 +49,38 @@ function Register() {
         val !== values.password ? "Passwords do not match" : null,
     },
   });
+  const [visible, { open, close }] = useDisclosure(false);
+  const registerUser = useRegister();
+  const navigate = useNavigate();
 
-  const registerFormSubmitHandler = () => {};
+  const registerFormSubmitHandler = () => {
+    open();
+    registerUser.mutate(
+      {
+        id: uuid4(),
+        fullName: form.values.fullName,
+        email: form.values.email,
+        phone: form.values.phone,
+        password: form.values.password,
+      },
+      {
+        onSettled: () => {
+          console.log("registered");
+          close();
+          navigate("/login");
+        },
+      }
+    );
+  };
 
   return (
-    <Container size={420} my={40}>
+    <Container size={420} my={40} pos="relative">
+      <LoadingOverlay
+        visible={visible}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 2 }}
+        loaderProps={{ color: "blue", type: "bars" }}
+      />
       <Title ta="center" className={classes.title}>
         Welcome
       </Title>
@@ -63,20 +94,16 @@ function Register() {
           <TextInput
             label="Full Name"
             placeholder="Your full name"
-            value={form.values.fullName}
-            onChange={(event) =>
-              form.setFieldValue("fullName", event.currentTarget.value)
-            }
+            key={form.key("fullName")}
+            {...form.getInputProps("fullName")}
             required
           />
 
           <TextInput
             label="Email"
             placeholder="Your email"
-            value={form.values.email}
-            onChange={(event) =>
-              form.setFieldValue("email", event.currentTarget.value)
-            }
+            key={form.key("email")}
+            {...form.getInputProps("email")}
             error={form.errors.email}
             required
           />
@@ -84,10 +111,8 @@ function Register() {
           <TextInput
             label="Phone Number"
             placeholder="Your phone number"
-            value={form.values.phone}
-            onChange={(event) =>
-              form.setFieldValue("phone", event.currentTarget.value)
-            }
+            key={form.key("phone")}
+            {...form.getInputProps("phone")}
             error={form.errors.phone}
             required
           />
@@ -95,10 +120,8 @@ function Register() {
           <PasswordInput
             label="Password"
             placeholder="Your password"
-            value={form.values.password}
-            onChange={(event) =>
-              form.setFieldValue("password", event.currentTarget.value)
-            }
+            key={form.key("password")}
+            {...form.getInputProps("password")}
             error={form.errors.password}
             required
             mt="md"
@@ -107,16 +130,14 @@ function Register() {
           <PasswordInput
             label="Reenter Password"
             placeholder="Enter your password again"
-            value={form.values.reenterPassword}
-            onChange={(event) =>
-              form.setFieldValue("reenterPassword", event.currentTarget.value)
-            }
+            key={form.key("reenterPassword")}
+            {...form.getInputProps("reenterPassword")}
             error={form.errors.reenterPassword}
             required
             mt="md"
           />
 
-          <Button fullWidth mt="xl">
+          <Button type="submit" fullWidth mt="xl">
             Sign up
           </Button>
         </form>

@@ -1,3 +1,20 @@
 {
-  "users": []
+  "users": [
+    {
+      "email": "john@email.com",
+      "password": "$2a$10$RJlRyv.ukQisXHiPayv0gOlUBeBNHjD9S8w7yrjWAJWb7WVH1ZuJS",
+      "id": "557afee7-5fe6-4003-be49-46bbe071adce",
+      "fullName": "John Doe",
+      "phone": "9876543210",
+      "isAdmin": true
+    },
+    {
+      "email": "jane@email.com",
+      "password": "$2a$10$c0Axc6LQPcOQJm.gtr2lP.VFWn6LJ5b4yE/Qt8JeQtKnPNOwrKqDm",
+      "id": "d208fd5b-c2c0-4260-8df4-b356b0ddb6cb",
+      "fullName": "Jane Doe",
+      "phone": "9876543210",
+      "isAdmin": false
+    }
+  ]
 }

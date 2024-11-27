@@ -16,13 +16,13 @@ const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <MantineProvider>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <MantineProvider>
           <App />
-        </BrowserRouter>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </MantineProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </MantineProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   </StrictMode>
 );
