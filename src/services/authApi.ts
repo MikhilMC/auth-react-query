@@ -7,7 +7,6 @@ const axiosInstance = axios.create({
 });
 
 export type RegisterParams = {
-  id: string;
   fullName: string;
   email: string;
   phone: string;
@@ -20,7 +19,6 @@ export type LoginParams = {
 };
 
 export async function register({
-  id,
   fullName,
   email,
   phone,
@@ -28,7 +26,6 @@ export async function register({
 }: RegisterParams) {
   return (
     await axiosInstance.post("/register", {
-      id,
       fullName,
       email,
       phone,

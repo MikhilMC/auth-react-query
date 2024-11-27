@@ -11,8 +11,8 @@ export function useRegister() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, fullName, email, phone, password }: RegisterParams) =>
-      register({ id, fullName, email, phone, password }),
+    mutationFn: ({ fullName, email, phone, password }: RegisterParams) =>
+      register({ fullName, email, phone, password }),
     onSuccess: (user) => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
       toast.success("Account created successfully");
@@ -29,7 +29,14 @@ export function useLogin() {
       login({ email, password }),
     onSuccess: (user) => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
+      toast.success("Logged in successfully");
       console.log("User Logedin", user);
+    },
+    onError(error, variables, context) {
+      toast.error("Error");
+      console.log(error);
+      console.log(variables);
+      console.log(context);
     },
   });
 }

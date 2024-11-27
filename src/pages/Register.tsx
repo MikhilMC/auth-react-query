@@ -12,7 +12,6 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Link, useNavigate } from "react-router";
-import { v4 as uuid4 } from "uuid";
 
 import classes from "./Auth.module.css";
 import { checkPassword } from "../utils/helpers";
@@ -57,7 +56,6 @@ function Register() {
     open();
     registerUser.mutate(
       {
-        id: uuid4(),
         fullName: form.values.fullName,
         email: form.values.email,
         phone: form.values.phone,
